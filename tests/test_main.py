@@ -19,10 +19,13 @@ def test_shorten_url_success():
     print(f"Short code generated: {short_code}")
 
     #testing redirection
-    redirect_response = client.get(f"/{short_code}")
+    # redirect_response = client.get(f"/{short_code}")
+    redirect_response = client.get(f"/{short_code}", follow_redirects=False)
+    # redirect_response = client.request("GET", f"/{short_code}", allow_redirects=False)
+
     print(redirect_response.status_code)
     assert redirect_response.status_code == 307
-    assert redirect_response.headers["location"] == "https://google.com"
+    assert redirect_response.headers["location"] == "https://google.com/"
 
 def test_shorten_url_invalid():
     response = client.post("/shorten", json={"url": "not a valid url"})
